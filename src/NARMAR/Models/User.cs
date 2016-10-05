@@ -72,7 +72,6 @@ namespace NARMAR.Models
         [BsonElement("addressLine1")]
         public string AddressLine1 { get; set; }
 
-        [Required]
         [BsonElement("addressLine2")]
         public string AddressLine2 { get; set; }
 
