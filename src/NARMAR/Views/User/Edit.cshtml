@@ -1,0 +1,198 @@
+﻿@{
+    ViewData["Title"] = "Edit User";
+}
+@model NARMAR.Models.User
+@using MongoDB.Bson
+<section layout="row" layout-align="center center" layout-padding flex ng-controller="UserEditController" ng-init='user = @Model.ToJson(); user._id = "@Model.Id"; init();'>
+    <md-card flex flex-gt-xs="70">
+        <md-card-content ng-cloak>
+            <form name="userForm">
+                <md-tabs md-dynamic-height md-center-tabs md-no-select-click md-selected="actualTab">
+                    <md-tab>
+                        @* Personal Data *@
+                        <md-tab-label>Personal Data</md-tab-label>
+                        <md-tab-body>
+                            <section layout="column" layout-padding>
+                                <md-subheader class="md-no-sticky">Personal Data</md-subheader>
+                                <div layout="row" layout-xs="column">
+                                    <md-input-container flex>
+                                        <label>Name</label>
+                                        <input name="firstName" type="text" ng-model="user.firstName" required ng-pattern="/^[A-záéíóú\-ñ ]*$/"/>
+                                        <div ng-messages="userForm.firstName.$error" role="alert">
+                                            <div ng-message="required">You must supply your name.</div>
+                                            <div ng-message="pattern">Your name should not contain special characters.</div>
+                                        </div>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>Last Name</label>
+                                        <input name="lastName" type="text" ng-model="user.lastName" required ng-pattern="/^[A-záéíóú\-ñ ]*$/"/>
+                                        <div ng-messages="userForm.lastName.$error" role="alert">
+                                            <div ng-message="required">You must supply your name.</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row" layout-xs="column">
+                                    <md-autocomplete flex required md-input-name="country" md-selected-item="user.country" md-search-text="searchCountryText" md-items="country in countries.search(searchCountryText)" md-item-text="country.name" md-require-match md-floating-label="Country" md-select-on-match>
+                                        <md-item-template>
+                                            <span md-highlight-text="searchCountryText" md-highlight-flags="i"> {{ country.name }} ({{ country.code }})</span>
+                                        </md-item-template>
+                                        <md-not-found>
+                                            No matches found.
+                                        </md-not-found>
+                                        <div ng-messages="userForm.country.$error">
+                                            <div ng-message="required">You must supply your Country</div>
+                                        </div>
+                                    </md-autocomplete>
+
+                                    <md-input-container flex="none">
+                                        <label>Birth Date</label>
+                                        <md-datepicker name="birthDate" ng-model="user.birthDate" required md-open-on-focus md-date-filter="only18" />
+                                        <div ng-messages="userForm.birthDate.$error" multiple>
+                                            <div ng-message="valid">The entered value is not a date!</div>
+                                            <div ng-message="required">This field is required!</div>
+                                            <div ng-message="filtered">You should be +18 years old!</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row" layout-xs="column">
+                                    <md-input-container flex>
+                                        <label>Passport</label>
+                                        <input type="text" ng-model="user.passport" required/>
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>Identity Card Number (Optional)</label>
+                                        <input name="identityDocument" type="text" ng-model="user.identityDocument" ng-pattern="/^[\d-]*$/"/>
+                                        <div ng-messages="user.identityDocument.$error">
+                                            <div ng-message="pattern">This field should only contain numbers and hyphens</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row" layout-xs="column">
+                                    <md-input-container flex>
+                                        <label>Address Line 1</label>
+                                        <input type="text" ng-model="user.addressLine1" required />
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>Address Line 2</label>
+                                        <input type="text" ng-model="user.addressLine2" />
+                                    </md-input-container>
+                                </div>
+                                <div layout="row" layout-xs="column">
+                                    <md-input-container flex>
+                                        <label>City/State/Province</label>
+                                        <input type="text" ng-model="user.city" required />
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>Postal Code</label>
+                                        <input name="postalCode" type="text" ng-model="user.postalCode" ng-pattern="/^\d{5}$/"  md-maxlength="5" maxlength="5" />
+                                        <div ng-messages="user.postalCode.$error">
+                                            <div ng-message="pattern">This field should contain exactly 5 digits</div>
+                                        </div>
+                                    </md-input-container>
+                                </div>
+                                <div layout="row" layout-xs="column">
+                                    <md-subheader class="md-no-sticky">Gender</md-subheader>
+                                    <md-radio-group ng-model="user.gender" flex>
+                                        <md-radio-button value="male">Male</md-radio-button>
+                                        <md-radio-button value="female">Female</md-radio-button>
+                                    </md-radio-group>
+
+                                    <md-subheader class="md-no-sticky">Civil Status</md-subheader>
+                                    <md-radio-group ng-model="user.civilStatus" flex>
+                                        <md-radio-button value="single">Single</md-radio-button>
+                                        <md-radio-button value="married">Married</md-radio-button>
+                                    </md-radio-group>
+                                </div>
+                            </section>
+                        </md-tab-body>
+                    </md-tab>
+                    <md-tab>
+                        @* Contact Methods *@
+                        <md-tab-label>Contact Methods</md-tab-label>
+                        <md-tab-body>
+                            <section layout="column">
+                                <md-subheader class="md-no-sticky">Contact Methods</md-subheader>
+                                <div layout="row" ng-repeat="(idx,method) in user.contactMethods">
+                                    <md-input-container flex="nogrow">
+                                        <md-select ng-model="method.type" ng-disabled="!canDeleteContact(method.type)" aria-label="contact type dropdown">
+                                            <md-option value="phone"><md-icon>phone</md-icon> Phone</md-option>
+                                            <md-option value="mobile"><md-icon>smartphone</md-icon> Mobile</md-option>
+                                            <md-option value="work"><md-icon>work</md-icon> Work</md-option>
+                                            <md-option value="email"><md-icon>email</md-icon> Email</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                    <md-input-container flex ng-if="method.type === 'phone' || method.type === 'mobile'">
+                                        <label>Phone Number</label>
+                                        <input type="tel" required ng-model="method.content" ng-pattern="/^\d{10}$/"/>
+                                        <div class="hint">##########</div>
+                                    </md-input-container>
+
+                                    <md-input-container flex ng-if="method.type === 'work'">
+                                        <label>Phone Number</label>
+                                        <input type="tel" required ng-model="method.content" ng-pattern="/^\d{10}$/"/>
+                                        <div class="hint">##########</div>
+                                    </md-input-container>
+                                    <md-input-container ng-if="method.type === 'work'">
+                                        <label>Ext</label>
+                                        <input type="text" required ng-model="method.auxiliar"  md-maxlength="5" maxlength="5" />
+                                        <div class="hint">####</div>
+                                    </md-input-container>
+
+                                    <md-input-container flex ng-if="method.type === 'email'">
+                                        <label>Email</label>
+                                        <input type="email" required ng-model="method.content" ng-pattern="/^.+@@.+\..+$/"/>
+                                        <div class="hint">address@domain.com</div>
+                                    </md-input-container>
+
+                                    <md-button ng-if="canDeleteContact(method.type)" class="md-fab md-mini" ng-click="removeContact(idx)" style="float: right;">
+                                        <md-icon>remove</md-icon>
+                                    </md-button>
+                                </div>
+                                <md-button class="md-raised md-accent" ng-click="addContact()" ng-disabled="!canAddContacts()">
+                                    <md-icon>add</md-icon> Add contact method
+                                </md-button>
+                            </section>
+                        </md-tab-body>
+                    </md-tab>
+                    <md-tab>
+                        @* Economy *@
+                        <md-tab-label>Economy</md-tab-label>
+                        <md-tab-body>
+                            <md-subheader class="md-no-sticky">Economy</md-subheader>
+                            <div layout="column">
+                                <div layout="row">
+                                    <md-input-container flex>
+                                        <label>Company</label>
+                                        <input type="text" ng-model="user.job.company" />
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>Department</label>
+                                        <input type="text" ng-model="user.job.department" />
+                                    </md-input-container>
+                                </div>
+                                <div layout="row">
+                                    <md-input-container flex>
+                                        <label>Position</label>
+                                        <input type="text" ng-model="user.job.position" />
+                                    </md-input-container>
+                                    <md-input-container flex>
+                                        <label>Salary (USD$)</label>
+                                        <md-select ng-model="user.job.salary">
+                                            <md-option ng-repeat="(idx,salaryRange) in salaryRanges" ng-value="idx">{{ salaryRange }}</md-option>
+                                        </md-select>
+                                    </md-input-container>
+                                </div>
+                            </div>
+                        </md-tab-body>
+                    </md-tab>
+                </md-tabs>
+            </form>
+        </md-card-content>
+    </md-card>
+    <md-button class="md-fab md-primary" style="position: fixed;bottom: 20px;right: 20px;" ng-click="submitUser('/api/user/@Model.Id','@Url.Action("Index","User")')" ng-disabled="!formReady()">
+        <md-tooltip md-direction="left">
+            Finish
+        </md-tooltip>
+        <md-icon>arrow_forward</md-icon>
+    </md-button>
+</section>

@@ -1,0 +1,117 @@
+﻿@{
+    ViewData["Title"] = $"{Model.FirstName} {Model.LastName}";
+}
+@using MongoDB.Bson
+@using NARMAR.Models
+@model User
+<section layout="row" layout-align="center center" layout-padding flex ng-controller="UserDetailsController" ng-init="user = @Model.ToJson(); init();">
+    <md-card flex-xs="100" flex-gt-xs="75">
+        <md-card-content ng-cloak>
+            <div layout="column" layout-padding>
+                <div md-colors="::{ backgroundColor: 'background-100' }">
+                    <h1 class="md-headline" style="margin: 0;">@Model.FirstName @Model.LastName</h1>
+                    <h1 class="md-subhead" style="margin: 0;"> {{ countries.getName("@Model.Country") }} (@Model.Country)</h1>
+                </div>
+                <div style="padding-top: 15px;" layout="row" layout-xs="column" layout-align="center">
+                    <div flex-gt-xs="50">
+                        <md-subheader class="md-no-sticky">Personal Data</md-subheader>
+                        <div layout-margin>
+                            <div><strong>Passport: </strong><br hide-gt-sm />@Model.Passport</div>
+                            <div><strong>Identity Card Number:</strong><br hide-gt-sm />@Model.IdentityDocument</div>
+                            <div><strong>Gender: </strong><br hide-gt-sm />@Model.Gender</div>
+                            <div><strong>Birth Date: </strong><br hide-gt-sm />{{ user.birthDate.getDay()+"/"+user.birthDate.getMonth()+"/"+user.birthDate.getFullYear()  }}</div>
+                            <div><strong>City: </strong><br hide-gt-sm />@Model.City</div>
+                            <div><strong>Postal Code: </strong><br hide-gt-sm />@Model.PostalCode</div>
+                            <div><strong>Address Line 1: </strong><br hide-gt-sm />@Model.AddressLine1</div>
+                            <div><strong>Address Line 2: </strong><br hide-gt-sm />@Model.AddressLine2</div>
+                        </div>
+                    </div>
+                    <md-divider></md-divider>
+                    <div flex-gt-xs="50">
+                        <md-subheader class="md-no-sticky">Job's Data</md-subheader>
+                        <div layout-margin>
+                            <div><strong>Company: </strong><br hide-gt-sm />@Model.Job.Company</div>
+                            <div><strong>Department: </strong><br hide-gt-sm />@Model.Job.Department</div>
+                            <div><strong>Position: </strong><br hide-gt-sm />@Model.Job.Position</div>
+                            <div><strong>Salary: </strong><br hide-gt-sm /><strong style="font-size: 8pt;">USD$</strong> {{ salaryRanges[@Model.Job.Salary] }}</div>
+                        </div>
+                    </div>
+                </div>
+                <div layout-gt-sm="row" layout-sm="column" layout-align="center">
+                    @{ 
+                        List<ContactMethod> emails = new List<ContactMethod>();
+                        List<ContactMethod> phoneNumbers = new List<ContactMethod>();
+                        foreach(ContactMethod method in Model.ContactMethods)
+                        {
+                            if(method.Type == "email")
+                            {
+                                emails.Add(method);
+                            }else
+                            {
+                                phoneNumbers.Add(method);
+                            }
+                        }
+                    }
+                    <div flex-gt-sm="50" flex-sm>
+                        <md-subheader class="md-no-sticky">Phone Numbers</md-subheader>
+                        <md-list flex>
+                            @foreach (ContactMethod method in phoneNumbers)
+                            {
+                                <md-list-item>
+                                    @if (method.Type == "phone")
+                                    {
+                                        <md-icon class="md-avatar-icon">phone</md-icon>
+                                    }
+                                    else if (method.Type == "mobile")
+                                    {
+                                        <md-icon class="md-avatar-icon">smartphone</md-icon>
+                                    }
+                                    else if (method.Type == "work")
+                                    {
+                                        <md-icon class="md-avatar-icon">work</md-icon>
+                                    }
+                                    <p>@method.Content</p>
+                                    @if (method.Type == "work")
+                                    {
+                                        <p class="md-secondary">Ext: @method.Auxiliar</p>
+                                    }
+                                </md-list-item>
+                            }
+                        </md-list>
+                    </div>
+                    <md-divider hide show-gt-sm></md-divider>
+                    <div flex-gt-sm="50" flex-sm>
+                        <md-subheader class="md-no-sticky">Electronic Mails</md-subheader>
+                        <md-list flex>
+                            @foreach (ContactMethod method in emails)
+                            {
+                                <md-list-item>
+                                    <md-icon class="md-avatar-icon">email</md-icon>
+                                    <p>@method.Content</p>
+                                </md-list-item>
+                            }
+                        </md-list>
+
+                    </div>
+                </div>
+            </div>
+        </md-card-content>
+    </md-card>
+    <md-fab-speed-dial class="md-fling" md-direction="left" style="position: fixed; bottom: 20px; right: 20px;">
+        <md-fab-trigger>
+            <md-button class="md-fab">
+                <md-icon>more_vert</md-icon>
+            </md-button>
+        </md-fab-trigger>
+        <md-fab-actions>
+            <md-button class="md-fab md-raised md-mini" aria-label="Edit this user" ng-click="goTo('@Url.Action("Edit","User",new { id=Model.Id })')">
+                <md-icon>mode_edit</md-icon>
+                <md-tooltip>Edit this user</md-tooltip>
+            </md-button>
+            <md-button class="md-fab md-raised md-mini" aria-label="Delete this user" ng-click="delete('@Model.Id','@Url.Action("Index","User")',$event)">
+                <md-icon>delete</md-icon>
+                <md-tooltip>Delete this user</md-tooltip>
+            </md-button>
+        </md-fab-actions>
+    </md-fab-speed-dial>
+</section>

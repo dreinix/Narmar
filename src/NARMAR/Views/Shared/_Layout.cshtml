@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - NARMAR Flights</title>
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/angular-material/angular-material.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/lib/angular-material/angular-material.min.css" />
+        <link rel="stylesheet" href="~/css/site.min.css" />
+    </environment>
+</head>
+<body ng-app="narmarFlights" ng-cloak>
+    <div layout="column" layout-fill>
+        <md-toolbar>
+            <div class="md-toolbar-tools">
+                <img style="height: 80%; margin-right: 10px;" src="~/images/NARMAR-Logo.png"/>
+                <h2>
+                    <span hide-xs>@ViewData["Title"]</span>
+                </h2>
+                <span flex></span>
+                <md-button aria-label="Home">
+                    <a asp-action="Index" asp-controller="User">Home</a>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content>
+            @RenderBody()
+        </md-content>
+    </div>
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/angular/angular.js"></script>
+        <script src="~/lib/angular-animate/angular-animate.js"></script>
+        <script src="~/lib/angular-aria/angular-aria.js"></script>
+        <script src="~/lib/angular-messages/angular-messages.js"></script>
+        <script src="~/lib/angular-material/angular-material.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+        <script src="~/js/controllers.js" asp-append-version="true"></script>
+        <script src="~/js/factories.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js"></script>
+        <script src="~/lib/angular/angular.min.js"></script>
+        <script src="~/lib/angular-animate/angular-animate.min.js"></script>
+        <script src="~/lib/angular-aria/angular-aria.min.js"></script>
+        <script src="~/lib/angular-messages/angular-messages.min.js"></script>
+        <script src="~/lib/angular-material/angular-material.min.js"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+        <script src="~/js/factories.min.js" asp-append-version="true"></script>
+        <script src="~/js/controllers.min.js" asp-append-version="true"></script>
+    </environment>
+</body>
+</html>

@@ -1,0 +1,56 @@
+﻿@{
+    ViewData["Title"] = "List Users";
+}
+@model List<NARMAR.Models.User>
+<section layout="row" layout-align="center center" layout-padding flex ng-controller="UserIndexController">
+    <md-card flex-gt-xs="70">
+        <md-card-content ng-cloak>
+            <md-list flex>
+                @if (Model.Count == 0)
+                {
+                    <md-list>
+                        Users not found
+                    </md-list>
+                }
+                @foreach (var user in Model)
+                {
+                    <md-list-item class="md-2-line" data-user-id="@user.Id">
+                        <img src="/api/user/@user.Id/image" class="md-avatar" hide-xs/>
+                        <div class="md-list-item-text">
+                            <h3>@user.FirstName @user.LastName</h3>
+                            <h4>{{ countries.getName("@user.Country") }} <br hide-gt-xs />(@user.Passport)</h4>
+                        </div>
+                        <md-menu class="md-secondary">
+                            <md-button class="md-icon-button">
+                                <md-icon>more_vert</md-icon>
+                            </md-button>
+                            <md-menu-content>
+                                <md-menu-item>
+                                    <md-button ng-click="details('@user.Id')">
+                                        <md-icon>info</md-icon> Details
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="delete('@user.Id',$event)">
+                                        <md-icon>delete</md-icon> Delete
+                                    </md-button>
+                                </md-menu-item>
+                                <md-menu-item>
+                                    <md-button ng-click="goTo('@Url.Action("Edit","User",new { id=user.Id })')">
+                                        <md-icon>mode_edit</md-icon> Edit
+                                    </md-button>
+                                </md-menu-item>
+                            </md-menu-content>
+                        </md-menu>
+                    </md-list-item>
+                }
+            </md-list>
+        </md-card-content>
+    </md-card>
+    <md-button class="md-fab" style="position: fixed; bottom: 20px; right: 20px;" ng-click="goTo('@Url.Action("Create","User")')">
+        <md-tooltip md-direction="left">
+            Add New User
+        </md-tooltip>
+        <md-icon>add</md-icon>
+    </md-button>
+</section>
