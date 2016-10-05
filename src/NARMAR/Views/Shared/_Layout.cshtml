@@ -13,26 +13,32 @@
         <link rel="stylesheet" href="~/css/site.min.css" />
     </environment>
 </head>
-<body ng-app="narmarFlights" ng-cloak>
+<body ng-app="narmarFlights" ng-cloak ng-controller="AppController">
     <div layout="column" layout-fill>
         <md-toolbar>
             <div class="md-toolbar-tools">
-                <img style="height: 80%; margin-right: 10px;" src="~/images/NARMAR-Logo.png"/>
+                <img style="height: 80%; margin-right: 10px;" src="~/img/NARMAR-Logo.png"/>
                 <h2>
                     <span hide-xs>@ViewData["Title"]</span>
                 </h2>
                 <span flex></span>
-                <md-button aria-label="Home">
-                    <a asp-action="Index" asp-controller="User">Home</a>
+                <md-button aria-label="Home" ng-click="goTo('@Url.Action("Index","Home")')">
+                    Home
+                </md-button>
+                <md-button aria-label="Home" ng-click="showLogin()">
+                    Sign In
                 </md-button>
             </div>
         </md-toolbar>
         <md-content>
             @RenderBody()
+            @* If no user is logged in *@
         </md-content>
+        @Html.Partial("_Login");
     </div>
     <environment names="Development">
         <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/js/jssor.slider-21.1.5.mini.js"></script>
         <script src="~/lib/angular/angular.js"></script>
         <script src="~/lib/angular-animate/angular-animate.js"></script>
         <script src="~/lib/angular-aria/angular-aria.js"></script>

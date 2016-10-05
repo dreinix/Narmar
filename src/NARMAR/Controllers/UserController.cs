@@ -50,5 +50,11 @@ namespace NARMAR.Controllers
                 return HttpNotFound();
             return View(user);
         }
+
+        // GET: /User/Login
+        public IActionResult Login()
+        {
+            return PartialView();
+        }
     }
 }

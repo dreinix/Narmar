@@ -1,6 +1,81 @@
 ﻿angular.module('narmarFlights.controllers', [])
-.controller("UserIndexController", ["$scope", "$mdDialog", "$mdToast", "countryFactory", "goTo", function ($scope, $mdDialog, $mdToast, countryFactory, goTo) {
+.controller("AppController", ["$scope", "$mdDialog", "goTo", function ($scope, $mdDialog, goTo) {
     $scope.goTo = goTo;
+    $scope.showLogin = function (ev) {
+        $mdDialog.show({
+            contentElement: '#loginDialog',
+            parent: angular.element(document.body),
+            targetEvent: ev,
+            clickOutsideToClose: true
+        });
+    };
+}])
+.controller("LoginController", ["$scope", "$mdDialog", function ($scope, $mdDialog) {
+    $scope.loginData = {
+        email: "",
+        password: ""
+    };
+    $scope.hide = function () {
+        $mdDialog.hide();
+    }
+    $scope.checkLogin = function () {
+        return !!$scope.loginData.email && !!$scope.loginData.password;
+    };
+}])
+
+
+.controller("HomeIndexController", ["$scope", function ($scope) {
+    $scope.vision = "Be the first Dominican travel agency with international renown, with quality services, which, to give the best experience to our customers, adapting to their needs, with the necessary advice to, on vacation, have a unique experience.";
+    $scope.mission = "Being the leading travel agency in Latin America, with the largest variety of destinations, flights per day and with greater safety and comfort the market.";
+
+    $(document).ready(function ($) {
+
+        var jssor_1_options = {
+            $AutoPlay: true,
+            $SlideDuration: 800,
+            $SlideEasing: $Jease$.$OutQuint,
+            $CaptionSliderOptions: {
+                $Class: $JssorCaptionSlideo$
+            },
+            $ArrowNavigatorOptions: {
+                $Class: $JssorArrowNavigator$
+            },
+            $BulletNavigatorOptions: {
+                $Class: $JssorBulletNavigator$
+            }
+        };
+
+        var jssor_1_slider = new $JssorSlider$("jssor_1", jssor_1_options);
+
+        //responsive code begin
+        //you can remove responsive code if you don't want the slider scales while window resizing
+        function ScaleSlider() {
+            var refSize = jssor_1_slider.$Elmt.parentNode.clientWidth;
+            if (refSize) {
+                refSize = Math.min(refSize, 1920);
+                jssor_1_slider.$ScaleWidth(refSize);
+            }
+            else {
+                window.setTimeout(ScaleSlider, 30);
+            }
+        }
+        ScaleSlider();
+        $(window).bind("load", ScaleSlider);
+        $(window).bind("resize", ScaleSlider);
+        $(window).bind("orientationchange", ScaleSlider);
+        //responsive code end
+    });
+
+}])
+
+
+
+
+
+
+
+
+.controller("UserIndexController", ["$scope", "$mdDialog", "$mdToast", "countryFactory", function ($scope, $mdDialog, $mdToast, countryFactory) {
     $scope.countries = countryFactory;
     $scope.details = function (id) {
         location.href = "/User/Details/" + id;
@@ -33,10 +108,9 @@
         });
     };
 }])
-.controller("UserDetailsController", ["$scope", "$mdDialog", "$mdToast", "countryFactory", "salaryRanges", "goTo", function ($scope, $mdDialog, $mdToast, countryFactory, salaryRanges, goTo) {
+.controller("UserDetailsController", ["$scope", "$mdDialog", "$mdToast", "countryFactory", "salaryRanges", function ($scope, $mdDialog, $mdToast, countryFactory, salaryRanges) {
     $scope.countries = countryFactory;
     $scope.salaryRanges = salaryRanges;
-    $scope.goTo = goTo;
     // Initialization function
     $scope.init = function () {
         $scope.user.birthDate = new Date($scope.user.birthDate);
@@ -66,7 +140,7 @@
         });
     };
 }])
-.controller('UserCreateController', ["$scope", "$mdToast", "countryFactory", "salaryRanges", "goTo", function ($scope, $mdToast, countryFactory, salaryRanges, goTo) {
+.controller('UserCreateController', ["$scope", "$mdToast", "countryFactory", "salaryRanges", function ($scope, $mdToast, countryFactory, salaryRanges) {
     const locals = {
         tabCount: 3
     };
@@ -193,7 +267,7 @@
         });
     };
 }])
-.controller('UserEditController', ["$scope", "$mdToast", "countryFactory", "salaryRanges", "goTo", function ($scope, $mdToast, countryFactory, salaryRanges, goTo) {
+.controller('UserEditController', ["$scope", "$mdToast", "countryFactory", "salaryRanges", function ($scope, $mdToast, countryFactory, salaryRanges) {
     const locals = {
         tabCount: 3
     };

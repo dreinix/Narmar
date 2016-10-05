@@ -1,0 +1,30 @@
+﻿<div style="visibility: hidden">
+    <div class="md-dialog-container" id="loginDialog" ng-controller="LoginController">
+        <md-dialog layout-padding flex="50" style="padding: 0px">
+            <md-button class="md-fab" style="position: absolute; right: 10px; top: 44px;" ng-disabled="!checkLogin()">
+                <md-icon>forward</md-icon>
+                <md-tooltip md-direction="top">Sign In</md-tooltip>
+            </md-button>
+            <md-button class="md-fab md-mini md-raised md-accent md-hue-1" style="position: absolute; right: 80px; top: 52px;" ng-click="goTo('@Url.Action("Create","User")')">
+                <md-icon style="color: white;">add</md-icon>
+                <md-tooltip md-direction="top">Sign Up</md-tooltip>
+            </md-button>
+            <md-toolbar>
+                <div class="md-toolbar-tools">
+                    <h2>Sign in</h2>
+                </div>
+            </md-toolbar>
+            <form name="loginForm" layout="column" layout-margin>
+                <md-input-container style="margin-top: 15px;">
+                    <label>Email</label>
+                    <input name="email" type="text" ng-pattern="/^.+@@.+\..+$/" ng-model="loginData.email" required>
+                    <div class="hint">address@domain.com</div>
+                </md-input-container>
+                <md-input-container>
+                    <label>Password</label>
+                    <input type="password" ng-model="loginData.password" required>
+                </md-input-container>
+            </form>
+        </md-dialog>
+    </div>
+</div>
