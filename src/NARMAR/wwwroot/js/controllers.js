@@ -140,6 +140,29 @@
         });
     };
 }])
+.controller("UserConfirmController",["$scope", function ($scope) {
+    $scope.correo = "nada@nada.nada";
+    $scope.Usuario = "El usuario"
+
+    $scope.ConfirmCode = function (codigo) {
+      
+        if(angular.uppercase(codigo)=="A004"){
+            console.log("Aceptado");
+            document.getElementById('CodeConfirm').style.display = 'none';
+            document.getElementById('CodeConfirmed').style.display = 'block';
+        }
+        else {
+            console.log("codigo erroneo");
+        }
+    }
+    $scope.ConfirmUSer = function (user,pass,conpass) {
+        if (pass == conpass) {
+            console.log("work");
+            
+        }
+    }
+
+}])
 .controller('UserCreateController', ["$scope", "$mdToast", "countryFactory", "salaryRanges", function ($scope, $mdToast, countryFactory, salaryRanges) {
     const locals = {
         tabCount: 3

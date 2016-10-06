@@ -1,4 +1,63 @@
 ﻿@{
-    ViewData["Title"] = "Confirm User";
+    ViewData["Title"] = "Confirm";
 }
-manueeeeeeeeeeeeeeeeeeeel
+@using MongoDB.Bson
+@using NARMAR.Models
+<section layout-gt-xs="row" layout-xs="Column" layout-align="center center" layout-padding flex ng-controller="UserConfirmController">
+    <md-card flex-xs="100" flex-gt-xs="75">
+        <md-card-content ng-cloak>
+
+         
+            <div id="CodeConfirm">
+
+                <h3>  Hi {{Usuario}} we have sent an mail to {{correo}}. Please check it out </h3>
+                <h4> Thanks for trust in NARMAR flights. As soon like you confirm the mail, we'll be working with you</h4>
+
+
+
+
+                <md-input-container>
+                    <label> Inserte su código </label>
+                    <input ng-model="Code" type="text" />
+                </md-input-container>
+
+                <md-button style="width: auto;" ng-click="ConfirmCode(Code)">
+                    <md-tooltip md-direction="right">
+                        Confirm
+                    </md-tooltip>
+                    Verify
+                </md-button>
+
+            </div>
+            <div id="CodeConfirmed" style="display: none;">
+                <md-input-container>
+                    <label> Set your User </label>
+                    <input ng-model="User" type="text" />
+                </md-input-container>
+                </br>
+                <md-input-container>
+                    <label> Set your password </label>
+                    <input ng-model="Pass" type="text" />
+                </md-input-container>
+                <md-input-container>
+
+                    <label> Confirm your password </label>
+                    <input ng-model="Pass2" type="text" />
+                </md-input-container>
+
+                <md-button style="width: auto;" ng-click="ConfirmUSer(User,Pass,Pass2)">
+                    <md-tooltip md-direction="right">
+                        done
+                    </md-tooltip>
+                    <md-icon>done</md-icon>
+                </md-button>
+            </div>
+
+
+            <div id="resend">
+                Didn't you receive the mail ? <a> resend Code</a>
+            </div>
+        </md-card-content>
+    </md-card>
+
+</section>
