@@ -43,7 +43,16 @@ namespace NARMAR.Models
     {
         [BsonElement("_id")]
         public ObjectId Id { get; set; }
-        
+
+        [BsonElement("username")]
+        public string Username { get; set; } = "";
+
+        [BsonElement("password")]
+        public string Password { get; set; } = "";
+
+        [BsonElement("active")]
+        public bool Active { get; set; } = false;
+
         [Required]
         [BsonElement("firstName")]
         public string FirstName { get; set; }
@@ -95,15 +104,11 @@ namespace NARMAR.Models
         [BsonElement("contactMethods")]
         [ListMinLength(2)]
         [ListMaxLength(10)]
-        public List<ContactMethod> ContactMethods { get; set; }
+        public List<ContactMethod> ContactMethods { get; set; } = new List<ContactMethod>();
 
         [BsonElement("job")]
-        public Job Job { get; set; }
+        public Job Job { get; set; } = new Job();
 
-        public User(){
-            Job = new Job();
-            ContactMethods = new List<ContactMethod>();
-        }
     }
     public class ContactMethod
     {

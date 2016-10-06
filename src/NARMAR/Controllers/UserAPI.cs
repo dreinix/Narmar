@@ -75,9 +75,13 @@ namespace NARMAR.Controllers
         [HttpPut("{id}")]
         public dynamic Put(string id, [FromBody]User newData)
         {
-            User user = _userRepository.GetById(new ObjectId(id));
-            _userRepository.Update(new ObjectId(id),newData);
-            return new { status = "done", data = newData};
+            if(LoginAPI.ValidateAccessToken(Request.Headers["X-Access-Token"],new ObjectId(id)))
+            {
+                User user = _userRepository.GetById(new ObjectId(id));
+                _userRepository.Update(new ObjectId(id), newData);
+                return new { status = "done", data = newData };
+            }
+            return new { status = "failed" };
         }
 
         // DELETE api/user/57cfcfa8dd7b950f10302a67

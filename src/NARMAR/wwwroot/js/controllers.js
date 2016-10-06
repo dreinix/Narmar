@@ -1,6 +1,8 @@
 ﻿angular.module('narmarFlights.controllers', [])
 .controller("AppController", ["$scope", "$mdDialog", "goTo", function ($scope, $mdDialog, goTo) {
     $scope.goTo = goTo;
+    $scope.accessToken = undefined;
+    $scope.currentUser = undefined;
     $scope.showLogin = function (ev) {
         $mdDialog.show({
             contentElement: '#loginDialog',
@@ -9,18 +11,55 @@
             clickOutsideToClose: true
         });
     };
+    $scope.loginSuccess = function(data){
+        $scope.accessToken = data.token;
+        $.ajax({
+            url: "/api/user/" + data.uid,
+            method: "get",
+            success: function (data) {
+                console.log(data);
+                $scope.currentUser = data;
+            }
+        });
+    }
+    $scope.init = function (data) {
+        if (data.token && data.uid) {
+            $scope.accessToken = data.token;
+            $.ajax({
+                url: "/api/user/" + data.uid,
+                method: "get",
+                success: function (data) {
+                    console.log(data);
+                    $scope.currentUser = data;
+                }
+            });
+        }
+    }
 }])
 .controller("LoginController", ["$scope", "$mdDialog", function ($scope, $mdDialog) {
     $scope.loginData = {
-        email: "",
+        username: "",
         password: ""
     };
     $scope.hide = function () {
         $mdDialog.hide();
     }
     $scope.checkLogin = function () {
-        return !!$scope.loginData.email && !!$scope.loginData.password;
+        return !!$scope.loginData.username && !!$scope.loginData.password;
     };
+    $scope.doLogin = function () {
+        $.ajax({
+            url: "/api/login",
+            method: "post",
+            dataType: "json",
+            contentType: "application/json",
+            data: JSON.stringify($scope.loginData),
+            success: function (data) {
+                $scope.loginSuccess(data);
+                $scope.hide();
+            }
+        })
+    }
 }])
 
 

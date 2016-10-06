@@ -34,9 +34,17 @@ namespace NARMAR.Models
         {
             return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Empty).ToEnumerable<User>();
         }
+        public IEnumerable<User> AllActive()
+        {
+            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Eq(x => x.Active,true)).ToEnumerable<User>();
+        }
+        public IEnumerable<User> AllInactive()
+        {
+            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Eq(x => x.Active, false)).ToEnumerable<User>();
+        }
         public User GetById(ObjectId id)
         {
-            var query = Builders<User>.Filter.Eq("_id", id);
+            var query = Builders<User>.Filter.Eq(x => x.Id, id);
             var opts= new FindOptions<User>();
             return Database.GetCollection<User>("Users").FindSync<User>(query, opts).Single<User>();
         }
@@ -58,7 +66,7 @@ namespace NARMAR.Models
         }
         public bool Remove(ObjectId id)
         {
-            Database.GetCollection<User>("Users").DeleteOne(Builders<User>.Filter.Eq("_id",id));
+            Database.GetCollection<User>("Users").DeleteOne(Builders<User>.Filter.Eq(x => x.Id,id));
             return !Exists(id);
         }
     }

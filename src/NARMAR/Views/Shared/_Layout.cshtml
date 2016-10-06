@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@{ 
+    NARMAR.Models.IUserRepository _userRepository = new NARMAR.Models.UserRepository();
+}
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -13,7 +16,7 @@
         <link rel="stylesheet" href="~/css/site.min.css" />
     </environment>
 </head>
-<body ng-app="narmarFlights" ng-cloak ng-controller="AppController">
+<body ng-app="narmarFlights" ng-cloak ng-controller="AppController" ng-init=" init({ token: '@Context.Request.Cookies["accessToken"]' , uid: '@Context.Request.Cookies["currentUserId"]' }) ">
     <div layout="column" layout-fill>
         <md-toolbar>
             <div class="md-toolbar-tools">
@@ -22,11 +25,14 @@
                     <span hide-xs>@ViewData["Title"]</span>
                 </h2>
                 <span flex></span>
-                <md-button aria-label="Home" ng-click="goTo('@Url.Action("Index","Home")')">
+                <md-button ng-click="goTo('@Url.Action("Index","Home")')">
                     Home
                 </md-button>
-                <md-button aria-label="Home" ng-click="showLogin()">
+                <md-button ng-click="showLogin()" ng-show="currentUser === undefined">
                     Sign In
+                </md-button>
+                <md-button ng-click="goShopping()" ng-show="currentUser !== undefined">
+                    {{ currentUser.FirstName }} {{ currentUser.LastName }}
                 </md-button>
             </div>
         </md-toolbar>

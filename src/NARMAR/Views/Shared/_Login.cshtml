@@ -1,7 +1,7 @@
 ﻿<div style="visibility: hidden">
     <div class="md-dialog-container" id="loginDialog" ng-controller="LoginController">
         <md-dialog layout-padding flex="50" style="padding: 0px">
-            <md-button class="md-fab" style="position: absolute; right: 10px; top: 44px;" ng-disabled="!checkLogin()">
+            <md-button class="md-fab" style="position: absolute; right: 10px; top: 44px;" ng-disabled="!checkLogin()" ng-click="doLogin()">
                 <md-icon>forward</md-icon>
                 <md-tooltip md-direction="top">Sign In</md-tooltip>
             </md-button>
@@ -17,7 +17,7 @@
             <form name="loginForm" layout="column" layout-margin>
                 <md-input-container style="margin-top: 15px;">
                     <label>Email</label>
-                    <input name="email" type="text" ng-pattern="/^.+@@.+\..+$/" ng-model="loginData.email" required>
+                    <input name="text" type="text" ng-model="loginData.username" required>
                     <div class="hint">address@domain.com</div>
                 </md-input-container>
                 <md-input-container>
