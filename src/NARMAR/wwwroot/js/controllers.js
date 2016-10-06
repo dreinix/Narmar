@@ -134,7 +134,7 @@
                         .textContent("The user was deleted successfully")
                         .hideDelay(3000)
                     );
-                    goTo(redirect);
+                    $scope.goTo(redirect);
                 }
             });
         });
@@ -255,7 +255,7 @@
                     .textContent("Usuario enviado correctamente")
                     .hideDelay(3000)
                 );
-                goTo(redirect);
+                $scope.goTo(redirect);
             },
             error: function (err) {
                 $mdToast.show(
@@ -353,7 +353,7 @@
                     .textContent("Usuario enviado correctamente")
                     .hideDelay(3000)
                 );
-                goTo(redirect);
+                $scope.goTo(redirect);
             },
             error: function (err) {
                 console.log("Fail: ", data);

@@ -32,6 +32,10 @@ namespace NARMAR.Controllers
         {
             return View();
         }
+        //GET:: /User/Login/Confirm
+        public IActionResult Confirm() {
+            return View();
+        }
 
         // GET: /User/Edit
         public IActionResult Edit(string id)
