@@ -108,12 +108,6 @@
 }])
 
 
-
-
-
-
-
-
 .controller("UserIndexController", ["$scope", "$mdDialog", "$mdToast", "countryFactory", function ($scope, $mdDialog, $mdToast, countryFactory) {
     $scope.countries = countryFactory;
     $scope.details = function (id) {
@@ -200,6 +194,120 @@
             
         }
     }
+
+}])
+
+.controller("VueloController", ["$scope", "countryFactory", function ($scope, countryFactory) {
+    $scope.countries = countryFactory;
+   
+
+
+
+    $scope.AvaibleFlight = [
+      { "id": 0, "Ocity": "Romana", "Ocountry": "Rep. Dom", "Dcity": "Miami", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30","Apeople":"40" },
+      { "id": 1, "Ocity": "Miami", "Ocountry": "U.S.A", "Dcity": "Puerto Plata", "Dcountry": "Rep. Dom", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 2, "Ocity": "Tokyo", "Ocountry": "Japan", "Dcity": "Tampa", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 2, "Ocity": "Bonao", "Ocountry": "Rep. Dom", "Dcity": "Tampa", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 2, "Ocity": "NY", "Ocountry": "U.S.A", "Dcity": "Tokyo", "Dcountry": "Japan", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 2, "Ocity": "Irohchima", "Ocountry": "Japan", "Dcity": "Miami", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" }
+    ]
+
+    $scope.DestinoActual = null;
+
+    $scope.CurrentOrigin = null;
+    $scope.CurrentDestination = null;
+
+
+    $scope.GoTo = function (url) {
+        location.href = url;
+    }
+    $scope.Flight = {
+        Origin: "",
+        Destination: "",
+        CurrentFlight: "",
+        Date: (function () {
+            today = new Date();
+            today.setFullYear(today.getFullYear());
+            return today;
+        })(),
+        Adult: "",
+        Teen: "",
+        Kids: "",
+        Baby: ""
+            
+    };
+
+    this.Cards = ('Visa Master_Card').split(' ').map(function (Card) { return { Current: Card }; });
+
+    
+    $scope.Pay = {
+        Fname: "",
+        Lname: "",
+        CardType: "",
+        CardNumber: "",
+        CCV: "",
+        ExpirateDate: ""
+
+    };
+
+    $scope.formReady = function () {
+        let a = !!$scope.Flight.Origin;
+        let b = !!$scope.Flight.Destination;
+        let c = !!$scope.Flight.Date;
+        let d = !!$scope.Flight.Adult;
+        let e = !!$scope.Flight.CurrentFlight;
+        let f = !!$scope.pay.Fname;
+        let g = !!$scope.pay.Lname;
+        let h = !!$scope.pay.CardType;
+        let i = !!$scope.pay.CardNumber;
+        let j = !!$scope.pay.CCV;
+        let k = !!$scope.pay.ExpirateDate;
+        return (
+            a && b && c && d &&
+            e && f && g && h &&
+            i && j && k
+        );
+    };
+    $scope.DataReady = function () {
+        let a = !!$scope.Flight.Origin;
+        let b = !!$scope.Flight.Destination;
+        let c = !!$scope.Flight.Date;
+        let d = !!$scope.Flight.Adult;
+        return (
+            a && b && c && d 
+        );
+    };
+    $scope.FlightReady = function () {
+        let a = !!$scope.Flight.Origin;
+        let b = !!$scope.Flight.Destination;
+        let c = !!$scope.Flight.Date;
+        let d = !!$scope.Flight.Adult;
+        let e = !!$scope.Flight.CurrentFlight;
+        return (
+            a && b && c && d && e
+        );
+    };
+    function SetOrigin(dest) {
+        $scope.Flight.Origin = dest;
+    }
+    $scope.MinToday = function (date) {
+        today = new Date();
+        today.setFullYear(today.getFullYear());
+        return date > today;
+    };
+    $scope.SetOrigin = SetOrigin;
+
+    function SetDestination(dest) {
+        $scope.Flight.Destination = dest;
+    }
+    $scope.SetFlight = SetFlight;
+    function  SetFlight(flight) {
+        $scope.Flight.CurrentFlight = flight;
+    }
+
+    $scope.SetDestination = SetDestination;
+
+
 
 }])
 .controller('UserCreateController', ["$scope", "$mdToast", "countryFactory", "salaryRanges", function ($scope, $mdToast, countryFactory, salaryRanges) {
