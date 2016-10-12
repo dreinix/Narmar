@@ -1,0 +1,39 @@
+﻿@{
+    ViewData["Title"] = "List Flights";
+}
+@model List<NARMAR.Models.Flight>
+<section layout="row" layout-align="center center" layout-padding flex>
+    <md-card flex-gt-xs="70">
+        <md-card-content ng-cloak>
+            <md-list flex>
+                @if (Model.Count == 0)
+                {
+                <md-list>
+                    not Flight found
+                </md-list>
+                }
+                @foreach (var flight in Model)
+                {
+                <md-list-item class="md-2-line" data-user-id="@flight.Id">
+
+                    <div class="md-list-item-text">
+                        <h3>@flight.OriginCity @flight.DestinationCity</h3>
+                        <h4>@flight.DepHour @flight.ArHour</h4>
+                    </div>
+                    <md-menu class="md-secondary">
+                        <md-button class="md-icon-button">
+                            <md-icon>more_vert</md-icon>    
+                        </md-button>
+
+                </md-list-item>
+                }
+            </md-list>
+        </md-card-content>
+    </md-card>
+    <md-button class="md-fab" style="position: fixed; bottom: 20px; right: 20px;" ng-click="goTo('@Url.Action("Create","Vuelo")')">
+        <md-tooltip md-direction="left">
+            Add New Flight
+        </md-tooltip>
+        <md-icon>add</md-icon>
+    </md-button>
+</section>

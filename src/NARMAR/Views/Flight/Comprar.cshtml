@@ -1,0 +1,191 @@
+﻿
+@{
+    ViewBag.Title = "Flights";
+}
+<section layout-gt-xs="row" layout-xs="column" layout-align="center center" layout-padding flex ng-controller="VueloController">
+    <md-card flex flex-gt-xs="70">
+        <md-card-content ng-cloak>
+            <form name="flightForm">
+                <md-tabs md-dynamic-height md-center-tabs md-no-select-click md-selected="actualTab">
+                    <md-tab>
+                        @*Information *@
+                        <md-tab-label>Flight Information</md-tab-label>
+                        <md-tab-body>
+                            <md-subheader class="md-no-sticky">Data</md-subheader>
+                                <section layout-gt-xs="row" layout-xs="row">
+
+                                    <div style="width: 300px; height:400px;" md-whiteframe="4" layout="column" id="Izquierda" flex-gt-xs="80" flex-xs="80">
+                                        <md-toolbar class="md-theme-indigo">
+                                            <h1 class="md-toolbar-tools">Origin </h1>
+                                        </md-toolbar>
+
+                                        <md-autocomplete flex required md-input-name="OriginCountry" md-selected-item="selectedOriginCountryItem" md-selected-item-change="SetOrigin(selectedOriginCountryItem)" md-search-text="searchOriginCountryText" md-items="OriginCountry in countries.search(searchOriginCountryText)" md-item-text="OriginCountry.name" md-require-match md-floating-label="Origin" md-select-on-match ng-class="{active:SelectedOrigin(OriginCountry)}">
+                                            <md-item-template>
+                                                <span md-highlight-text="searchOriginCountryText" md-highlight-flags="i"> {{ OriginCountry.name }} ({{ OriginCountry.code }})</span>
+                                            </md-item-template>
+                                            <md-not-found>
+                                                No matches found.
+                                            </md-not-found>
+
+                                        </md-autocomplete>
+
+                                    </div>
+                                    <div style="width: 10px;" id="separacion">
+
+                                    </div>
+                                    <div md-whiteframe="4" style="width: 300px; height:400px;" id="Derecha" layout="column" flex-gt-xs="80" flex-xs="80">
+
+                                        <md-toolbar class="md-theme-indigo">
+                                            <h1 class="md-toolbar-tools">Destination </h1>
+                                        </md-toolbar>
+
+                                        <md-autocomplete flex required md-input-name="DestinationCountry" md-selected-item="selectedDestinationCountryItem" md-selected-item-change="SetDestination(selectedDestinationCountryItem)" md-search-text="searchDestinationCountryText" md-items="DestinationCountry in countries.search(searchDestinationCountryText)" md-item-text="DestinationCountry.name" md-require-match md-floating-label="Destination" md-select-on-match ng-class="{active:SelectedOrigin(DestinationCountry)}">
+                                            <md-item-template>
+                                                <span md-highlight-text="searchDestinationCountryText" md-highlight-flags="i"> {{ DestinationCountry.name }} ({{ DestinationCountry.code }})</span>
+                                            </md-item-template>
+                                            <md-not-found>
+                                                No matches found.
+                                            </md-not-found>
+
+                                        </md-autocomplete>
+
+                                    </div>
+                                    
+                                </section>
+                                <div layout-gt-xs="row" layout-xs="column"> 
+                            <md-input-container flex="none">
+                                <label>FlightDate</label>
+                                <md-datepicker name="birthDate" ng-model="Flight.Date" required md-open-on-focus md-date-filter="MinToday" />
+                                <div ng-messages="flightForm.Date.$error" multiple>
+                                    <div ng-message="valid">The entered value is not a date!</div>
+                                    <div ng-message="required">This field is required!</div>
+                                    <div ng-message="filtered">You can't travel to the past!</div>
+                                </div>
+
+                            </md-input-container>
+                                <div flex></div>
+                                    <div >
+                                        <md-input-container flex>
+                                            <label>Adult </label>
+                                            <input name="Adult" required  type="number" ng-model="Flight.Adult"  />
+                                            <div ng-messages="Flight.Adult.$error">
+                                                <div ng-message="required" class="my-message">At least an adult.</div>
+                                            </div>
+                                            <spam> >18</spam>
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>Teens </label>
+                                            <input name="Teens" type="number" ng-model="Flight.Teen"/>
+                                            <spam>12-17 </spam>
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>Kids </label>
+                                            <input name="Kids" type="number" ng-model="Flight.Kids" />
+                                            <spam> 2-11</spam>
+                                        </md-input-container>
+                                        <md-input-container flex>
+                                            <label>Babies </label>
+                                            <input name="Babies" type="number" ng-model="Flight.Baby" />
+                                            <spam> < 2 </spam>
+                                        </md-input-container>
+                                    </div>
+                            </div>
+                            </md-tab-body>
+                        </md-tab>
+                    <md-tab ng-disabled="!DataReady()">
+                        @* Get Flight*@
+                        <md-tab-label>Get Flight</md-tab-label>
+                        <md-tab-body>
+                            <md-subheader class="md-no-sticky">Flights</md-subheader>
+                            <section layout-gt-xs="row" layout-xs="column" layout-align="center center">
+                                <div style="width: 300px; height:400px;" md-whiteframe="4" layout="column" id="Izquierda" flex-gt-xs="80" flex-xs="80">
+                                    <md-toolbar class="md-theme-indigo" style="text-align: center;">
+                                        <h1 class="md-toolbar-tools">Avaible flights </h1>
+                                    </md-toolbar>
+                                    <div ng-repeat="vuelo in AvaibleFlight" md-whiteframe="6">
+
+
+                                        <md-button class="md-flat" style="background-color:#90CAF9; height: 30px;width: 99%" ng-click="SetFlight(vuelo)" >
+                                            From: {{vuelo.Ocity}} To: {{vuelo.Dcity}} - Cost: {{vuelo.Cost}}
+                                        </md-button>
+
+                                    </div>
+                                </div>
+                               
+                            </section>
+                        </md-tab-body>
+                    </md-tab>
+                    <md-tab ng-disabled="!  FlightReady()">
+                        @* Pay *@
+                        <md-tab-label>Pay</md-tab-label>
+                        <md-tab-body>
+                            <md-subheader class="md-no-sticky">Pay</md-subheader>
+                            <section layout-gt-xs="row" layout-xs="column">
+                                <md-input-container flex>
+                                    <label>Name</label>
+                                    <input name="firstName" type="text" ng-model="Pay.Fname" required ng-pattern="/^[A-záéíóú\-ñ ]*$/" />
+                                    <div ng-messages="flightForm.Fname.$error" role="alert">
+                                        <div ng-message="required">You must supply your name.</div>
+                                        <div ng-message="pattern">Your name should not contain special characters.</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex>
+                                    <label>Last Name</label>
+                                    <input name="lastName" type="text" ng-model="Pay.Lname" required ng-pattern="/^[A-záéíóú\-ñ ]*$/" />
+                                    <div ng-messages="flightForm.Lname.$error" role="alert">
+                                        <div ng-message="required">You must supply your name.</div>
+                                        <div ng-message="pattern">Your name should not contain special characters.</div>
+                                    </div>
+                                </md-input-container>
+
+                                
+
+                           
+                            </section>
+                            <div layout-gt-xs="row" layout-xs="column">
+                                <md-input-container>
+                                    <label>Card</label>
+                                    <md-select ng-model="Pay.CardType" placeholder="Card type" class="md-no-underline">
+                                        <md-option value="Master Card">Master Card</md-option>
+                                        <md-option value="Visa">Visa</md-option>
+                                        <md-option value="American Express">American Express</md-option>
+                                        <md-option value="Discover">Discover</md-option>
+                                        <md-option value="JCB">JCB</md-option>
+                                    </md-select>
+                                </md-input-container>
+                                <md-input-container flex-gt-xs="50" flex-xs="20">
+                                    <label>Card Number </label>
+                                    <input name="CardNomber" required type="text" ng-model="Pay.CardNumber" ng-pattern="/^\d{16}$/" ng-maxlength="16" maxlength="16"/>
+                                    <div ng-messages="Pay.CardNumber.$error">
+                                        <div ng-message="required" class="my-message">You need to give us a Number.</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex-gt-xs="50" flex-xs="20">
+                                    <label>CCV </label>
+                                    <input name="CCV" required type="text" ng-model="Pay.CCV" ng-pattern="/^\d{3}$/" ng-maxlength="3" maxlength="3" />
+                                    <div ng-messages="Pay.CardNumber.$error">
+                                        <div ng-message="required" class="my-message">You need to give us a Number.</div>
+                                    </div>
+                                </md-input-container>
+                                <md-input-container flex-gt-xs="50" flex-xs="20">
+                                    <label>Expirate Date </label>
+                                    <input name="ExpirateDate" required type="text" ng-model="Pay.ExpirateDate"  ng-maxlength="5" maxlength="5" />
+                                    <div ng-messages="Pay.CardNumber.$error">
+                                        <div ng-message="required" class="my-message">You need to give us a Number.</div>
+                                    </div>
+                                </md-input-container>
+                            </div>
+                        </md-tab-body>
+                    </md-tab>
+                    </md-tabs>
+                </form>
+              </md-card-content>
+            </md-card>
+   
+    <md-button class="md-fab md-primary" style="position: fixed;bottom: 20px;right: 20px;" ng-disabled="!formReady()">
+        <md-tooltip md-direction="left">
+            Finish
+        </md-tooltip>
+        <md-icon>arrow_forward</md-icon>
+    </md-button>
+</section>
