@@ -26,7 +26,12 @@ namespace NARMAR.Controllers
         {
             return View(_userRepository.AllUsers().ToList<User>());
         }
-
+        // GET: /User/Confirm
+        [HttpGet]
+        public IActionResult Confirm()
+        {
+            return View();
+        }
         // GET: /User/Create
         public IActionResult Create()
         {
