@@ -19,14 +19,19 @@ namespace NARMAR.Controllers
             _flightRepository = flightRepository;
         }
 
-        // GET: api/Flight
+        // GET: api/flight
         [HttpGet]
         public List<Flight> Get()
         {
-            return _flightRepository.AllFlight().ToList<Flight>();
+            return _flightRepository.AllFlights().ToList<Flight>();
         }
 
-
+        // GET: api/{capacity}
+        [HttpGet("{capacity}")]
+        public List<Flight> Get(int capacity)
+        {
+            return _flightRepository.GetByCapacity(capacity);
+        }
 
         // GET api/Flight/57cfcfa8dd7b950f10302a67
         [HttpGet("{id:length(24)}", Name = "GetRueById")]
@@ -75,7 +80,7 @@ namespace NARMAR.Controllers
             }
             else
             {
-                return _flightRepository.AllFlight().ToList<Flight>();
+                return _flightRepository.AllFlights().ToList<Flight>();
             }
         }
     }

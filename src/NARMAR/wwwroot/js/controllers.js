@@ -1,4 +1,4 @@
-﻿angular.module('narmarFlights.controllers', [])
+﻿    angular.module('narmarFlights.controllers', [])
 .controller("AppController", ["$scope", "$mdDialog", "goTo", function ($scope, $mdDialog, goTo) {
     $scope.goTo = goTo;
     $scope.accessToken = undefined;
@@ -200,16 +200,25 @@
 .controller("VueloController", ["$scope", "countryFactory", function ($scope, countryFactory) {
     $scope.countries = countryFactory;
    
+    $scope.ValidFlight = false;
+    $scope.TotalPago = "";
+    $scope.CalcularPago = function () {
+       
+        $scope.TP;
+        $scope.TotalPago = $scope.Flight.Adult * $scope.Flight.CurrentFlight.aPrice
+        + $scope.Flight.Teen * $scope.Flight.CurrentFlight.tPrice
+        + $scope.Flight.Kids * $scope.Flight.CurrentFlight.kPrice;
+        
 
-
-
+       
+    };
     $scope.AvaibleFlight = [
-      { "id": 0, "Ocity": "Romana", "Ocountry": "Rep. Dom", "Dcity": "Miami", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30","Apeople":"40" },
-      { "id": 1, "Ocity": "Miami", "Ocountry": "U.S.A", "Dcity": "Puerto Plata", "Dcountry": "Rep. Dom", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
-      { "id": 2, "Ocity": "Tokyo", "Ocountry": "Japan", "Dcity": "Tampa", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
-      { "id": 2, "Ocity": "Bonao", "Ocountry": "Rep. Dom", "Dcity": "Tampa", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
-      { "id": 2, "Ocity": "NY", "Ocountry": "U.S.A", "Dcity": "Tokyo", "Dcountry": "Japan", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
-      { "id": 2, "Ocity": "Irohchima", "Ocountry": "Japan", "Dcity": "Miami", "Dcountry": "U.S.A", "Cost": "400US", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" }
+      { "id": 0, "Ocity": "Romana", "Ocountry": "Rep. Dom", "Dcity": "Miami", "Dcountry": "U.S.A", "aPrice": "400", "tPrice": "200", "kPrice": "100", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 1, "Ocity": "Miami", "Ocountry": "United States", "Dcity": "Puerto Plata", "Dcountry": "Dominican Republic", "aPrice": "400US", "tPrice": "200", "kPrice": "100", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 2, "Ocity": "Tokyo", "Ocountry": "Japan", "Dcity": "Tampa", "Dcountry": "U.S.A", "aPrice": "400", "tPrice": "200", "kPrice": "100", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 3, "Ocity": "Bonao", "Ocountry": "Dominican Republic", "Dcity": "Tampa", "Dcountry": "United States", "aPrice": "400", "tPrice": "200", "kPrice": "100", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 4, "Ocity": "NY", "Ocountry": "U.S.A", "Dcity": "Tokyo", "Dcountry": "Japan", "aPrice": "400", "tPrice": "200", "kPrice": "100", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" },
+      { "id": 5, "Ocity": "Irohchima", "Ocountry": "Japan", "Dcity": "Miami", "Dcountry": "U.S.A", "aPrice": "400", "tPrice": "200", "kPrice": "100", "Escalas": "Sin escala", "HoraS": "13:00", "HoraF": "15:30", "Apeople": "40" }
     ]
 
     $scope.DestinoActual = null;
@@ -217,7 +226,14 @@
     $scope.CurrentOrigin = null;
     $scope.CurrentDestination = null;
 
-
+    $scope.ValidateFlight = function () {
+        if($scope.Flight.Origin != $scope.Flight.CurrentFlight.Ocountry && $scope.Flight.Destination != $scope.Flight.CurrentFlight.Dcountry) {
+            ValidFlight = false;
+        }
+        else {
+            ValidFlight = true;
+        }
+    }
     $scope.GoTo = function (url) {
         location.href = url;
     }
@@ -249,19 +265,20 @@
         ExpirateDate: ""
 
     };
-
+        
     $scope.formReady = function () {
         let a = !!$scope.Flight.Origin;
         let b = !!$scope.Flight.Destination;
         let c = !!$scope.Flight.Date;
         let d = !!$scope.Flight.Adult;
         let e = !!$scope.Flight.CurrentFlight;
-        let f = !!$scope.pay.Fname;
-        let g = !!$scope.pay.Lname;
-        let h = !!$scope.pay.CardType;
-        let i = !!$scope.pay.CardNumber;
-        let j = !!$scope.pay.CCV;
-        let k = !!$scope.pay.ExpirateDate;
+        let f = !!$scope.Pay.Fname;
+        let g = !!$scope.Pay.Lname;
+        let h = !!$scope.Pay.CardType;
+        let i = !!$scope.Pay.CardNumber;
+        let j = !!$scope.Pay.CCV;
+        let k = !!$scope.Pay.ExpirateDate;
+  
         return (
             a && b && c && d &&
             e && f && g && h &&
@@ -283,9 +300,12 @@
         let c = !!$scope.Flight.Date;
         let d = !!$scope.Flight.Adult;
         let e = !!$scope.Flight.CurrentFlight;
+        
+        $scope.CalcularPago();
         return (
             a && b && c && d && e
         );
+
     };
     function SetOrigin(dest) {
         $scope.Flight.Origin = dest;
@@ -301,8 +321,10 @@
         $scope.Flight.Destination = dest;
     }
     $scope.SetFlight = SetFlight;
-    function  SetFlight(flight) {
+    function SetFlight(flight) {
+        
         $scope.Flight.CurrentFlight = flight;
+        $scope.ValidateFlight();
     }
 
     $scope.SetDestination = SetDestination;

@@ -9,13 +9,15 @@ using MongoDB.Driver;
 namespace NARMAR.Controllers
 {
     public class FlightController : Controller
-    {
+    {   /*
         private IFlightRepository _flightRepository;
         public FlightController(IFlightRepository flightRepository)
         {
             _flightRepository = flightRepository;
 
         }
+        */
+
         // GET: /Flight/Comprar
         public IActionResult Comprar()
         {
@@ -25,7 +27,7 @@ namespace NARMAR.Controllers
         [HttpGet]
         public IActionResult Ver()
         {
-            return View(_flightRepository.AllFlight().ToList<Flight>());
+            return View(/*_flightRepository.AllFlight()*/);
         }
         // GET: /Flight/Create
         public IActionResult Create() {
