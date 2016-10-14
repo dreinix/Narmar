@@ -1,5 +1,5 @@
 ﻿    angular.module('narmarFlights.controllers', [])
-.controller("AppController", ["$scope", "$mdDialog", "goTo", function ($scope, $mdDialog, goTo) {
+.controller("AppController", ["$scope", "$mdDialog", "$mdToast", "goTo", function ($scope, $mdDialog, $mdToast, goTo) {
     $scope.goTo = goTo;
     $scope.accessToken = undefined;
     $scope.currentUser = undefined;
@@ -11,16 +11,36 @@
             clickOutsideToClose: true
         });
     };
-    $scope.loginSuccess = function(data){
-        $scope.accessToken = data.token;
+    $scope.loginSuccess = function (data) {
+        if (data.uid === undefined || data.token === undefined) {
+            $mdToast.show(
+                $mdToast.simple()
+                .textContent("User Data Invalid")
+            );
+        } else {
+            $scope.accessToken = data.token;
+            $.ajax({
+                url: "/api/user/" + data.uid,
+                method: "get",
+                success: function (data) {
+                    console.log(data);
+                    $scope.currentUser = data;
+                }
+            });
+        }
+    }
+    $scope.logout = function () {
         $.ajax({
-            url: "/api/user/" + data.uid,
-            method: "get",
+            url: "/api/login/" + $scope.accessToken,
+            method: "delete",
             success: function (data) {
-                console.log(data);
-                $scope.currentUser = data;
+                $scope.accessToken = undefined;
+                $scope.currentUser = undefined;
             }
         });
+    }
+    $scope.showMenu = function ($mdOpenMenu, ev) {
+        $mdOpenMenu(ev);
     }
     $scope.init = function (data) {
         if (data.token && data.uid) {
@@ -173,26 +193,59 @@
         });
     };
 }])
-.controller("UserConfirmController",["$scope", function ($scope) {
-    $scope.correo = "nada@nada.nada";
-    $scope.Usuario = "El usuario"
+.controller("UserConfirmController", ["$scope", function ($scope) {
+    $scope.User = "";
+    $scope.Pass = "";
+    $scope.Code = "";
+    $scope.codeConfirmed = false;
+
+
+
+    $scope.init = function(code){
+        $scope.Code = code;
+    }
+
 
     $scope.ConfirmCode = function (codigo) {
-      
-        if(angular.uppercase(codigo)=="A004"){
-            console.log("Aceptado");
-            document.getElementById('CodeConfirm').style.display = 'none';
-            document.getElementById('CodeConfirmed').style.display = 'block';
-        }
-        else {
-            console.log("codigo erroneo");
+        var code = 0;
+        console.log(code);
+        if(code == codigo){
+            console.log("Code V");
+            $scope.codeConfirmed = true;
+        } else {
+            console.log("Code IV");
+            $scope.codeConfirmed = false;
         }
     }
-    $scope.ConfirmUSer = function (user,pass,conpass) {
-        if (pass == conpass) {
-            console.log("work");
-            
-        }
+    $scope.ConfirmUser = function (user, pass, conpass) {
+        if (pass !== conpass)
+            return null;
+        $scope.currentUser.Username = user;
+        $scope.currentUser.Password = pass;
+        $.ajax({
+            url: url,
+            data: JSON.stringify($scope.currentUser),
+            dataType: "json",
+            contentType: "application/json",
+            method: "put",
+            success: function (data) {
+                console.log("Success: ", data);
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent("Usuario enviado correctamente")
+                    .hideDelay(3000)
+                );
+                $scope.goTo(redirect);
+            },
+            error: function (err) {
+                console.log("Fail: ", data);
+                $mdToast.show(
+                    $mdToast.simple()
+                    .textContent("Error: " + err.statusText)
+                    .hideDelay(3000)
+                );
+            }
+        });
     }
 
 }])
@@ -364,6 +417,10 @@
             salary: 0
         }
     };
+
+    $scope.init = function (code) {
+        $scope.user.username = code;
+    }
     /* Form static public data */
     $scope.countries = countryFactory;
     $scope.salaryRanges = salaryRanges;
@@ -557,4 +614,7 @@
             }
         });
     };
+}])
+.controller("EmptyController", ["$scope", function ($scope) {
+    $scope.x = Math.floor(Math.random() * 1000000);
 }]);

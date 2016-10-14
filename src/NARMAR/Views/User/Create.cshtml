@@ -1,7 +1,8 @@
 ﻿@{
     ViewData["Title"] = "Create User";
 }
-<section layout="row" layout-align="center center" layout-padding flex ng-controller="UserCreateController">
+@model long
+<section layout="row" layout-align="center center" layout-padding flex ng-controller="UserCreateController" ng-init="init( @Json.Serialize(Model) )">
     <md-card flex flex-gt-xs="70">
         <md-card-content ng-cloak>
             <form name="userForm">
@@ -187,7 +188,7 @@
             </form>
         </md-card-content>
     </md-card>
-    <md-button class="md-fab md-primary" style="position: fixed;bottom: 20px;right: 20px;" ng-click="submitUser('/api/user/','@Url.Action("Index","User")')" ng-disabled="!formReady()">
+    <md-button class="md-fab md-primary" style="position: fixed;bottom: 20px;right: 20px;" ng-click="submitUser('/api/user/','@Url.Action("Confirm","User")')" ng-disabled="!formReady()">
         <md-tooltip md-direction="left">
             Finish
         </md-tooltip>

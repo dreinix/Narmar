@@ -53,6 +53,12 @@ namespace NARMAR.Controllers
         {
             return _userRepository.GetById(new ObjectId(id));
         }
+        // GET api/user/code/:id
+        [HttpGet("{id:length(24)}")]
+        public string GetCode(string id)
+        {
+            return _userRepository.GetById(new ObjectId(id)).Username;
+        }
 
         // POST api/user
         [HttpPost]

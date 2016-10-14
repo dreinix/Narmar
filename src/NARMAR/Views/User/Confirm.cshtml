@@ -3,18 +3,15 @@
 }
 @using MongoDB.Bson
 @using NARMAR.Models
-<section layout-gt-xs="row" layout-xs="Column" layout-align="center center" layout-padding flex ng-controller="UserConfirmController">
+@model long
+<section layout-gt-xs="row" layout-xs="Column" layout-align="center center" layout-padding flex ng-controller="UserConfirmController" ng-init="init( @Json.Serialize(Model) )">
     <md-card flex-xs="100" flex-gt-xs="75">
         <md-card-content ng-cloak>
 
-         
-            <div id="CodeConfirm">
+            <div ng-show="!codeConfirmed">
 
-                <h3>  Hi {{Usuario}} we have sent an mail to {{correo}}. Please check it out </h3>
+                <h3>  Hi {{currentUser.FirstName}} we have sent an mail to {{ currentUser | getEmail}}. Please check it out </h3>
                 <h4> Thanks for trust in NARMAR flights. As soon like you confirm the mail, we'll be working with you</h4>
-
-
-
 
                 <md-input-container>
                     <label> Inserte su código </label>
@@ -29,9 +26,9 @@
                 </md-button>
 
             </div>
-            <div id="CodeConfirmed" style="display: none;">
+            <div ng-show="codeConfirmed">
                 <md-input-container>
-                    <label> Set your User </label>
+                    <label> Set your Username </label>
                     <input ng-model="User" type="text" />
                 </md-input-container>
                 </br>
@@ -45,7 +42,7 @@
                     <input ng-model="Pass2" type="text" />
                 </md-input-container>
 
-                <md-button style="width: auto;" ng-click="ConfirmUSer(User,Pass,Pass2)">
+                <md-button style="width: auto;" ng-click="ConfirmUser(User,Pass,Pass2)">
                     <md-tooltip md-direction="right">
                         done
                     </md-tooltip>

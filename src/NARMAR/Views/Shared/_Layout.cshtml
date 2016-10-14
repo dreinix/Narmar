@@ -31,9 +31,23 @@
                 <md-button ng-click="showLogin()" ng-show="currentUser === undefined">
                     Sign In
                 </md-button>
-                <md-button ng-click="goShopping()" ng-show="currentUser !== undefined">
-                    {{ currentUser.FirstName }} {{ currentUser.LastName }}
-                </md-button>
+                <md-menu>
+                    <md-button ng-click="showMenu($mdOpenMenu, $event)" ng-show="currentUser !== undefined">
+                        <span md-menu-origin>{{ currentUser.FirstName }} {{ currentUser.LastName }}</span>
+                    </md-button>
+                    <md-menu-content width="3">
+                        <md-menu-item>
+                            <md-button ng-click="goTo('@Url.Action("Comprar","Vuelos")')">
+                                <md-icon>airplanemode_active</md-icon> Trips
+                            </md-button>
+                        </md-menu-item>
+                        <md-menu-item>
+                            <md-button ng-click="logout()">
+                                <md-icon>exit_to_app</md-icon> Logout
+                            </md-button>
+                        </md-menu-item>
+                    </md-menu-content>
+                </md-menu>
             </div>
         </md-toolbar>
         <md-content>

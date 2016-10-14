@@ -1,0 +1,20 @@
+﻿
+@{
+    ViewBag.Title = "Flights";
+}
+<section layout-gt-xs="row" layout-xs="column" layout-align="center center" layout-padding flex ng-controller="EmptyController">
+    <md-card flex flex-gt-xs="70">
+        <md-card-content ng-cloak>
+            Se ha registrado su vuelo correctamente. El dinero ha sido descontado de su tarjeta de credito.
+            Su numero de vuelo es:
+            <h1>{{ x }}</h1>
+        </md-card-content>
+    </md-card>
+   
+    @*<md-button class="md-fab md-primary" style="position: fixed;bottom: 20px;right: 20px;" ng-disabled="!formReady()" ng-click="goTo('@Url.Action("Recibo","Vuelos")')">
+        <md-tooltip md-direction="left">
+            Finish
+        </md-tooltip>
+        <md-icon>arrow_forward</md-icon>
+    </md-button>*@
+</section>

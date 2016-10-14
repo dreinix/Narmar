@@ -64,7 +64,7 @@ namespace NARMAR.Controllers
             return new { status = "failed" };
         }
 
-        // DELETE api/values/token
+        // DELETE api/login/token
         [HttpDelete("{token}")]
         public void Delete(string token)
         {

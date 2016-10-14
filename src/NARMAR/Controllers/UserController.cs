@@ -18,7 +18,6 @@ namespace NARMAR.Controllers
         public UserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-
         }
         // GET: /User/
         [HttpGet]
@@ -35,13 +34,8 @@ namespace NARMAR.Controllers
         // GET: /User/Create
         public IActionResult Create()
         {
-            return View();
+            return View(GenerateConfirmCode());
         }
-        //GET:: /User/Login/Confirm
-        public IActionResult Confirm() {
-            return View();
-        }
-
         // GET: /User/Edit
         public IActionResult Edit(string id)
         {
@@ -64,6 +58,11 @@ namespace NARMAR.Controllers
         public IActionResult Login()
         {
             return PartialView();
+        }
+
+        public long GenerateConfirmCode ()
+        {
+            return DateTime.Now.Ticks + (new Random().Next());
         }
     }
 }

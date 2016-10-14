@@ -15,5 +15,10 @@ namespace NARMAR.Controllers
         {
             return View();
         }
+        // GET: /Vuelos/Recibo
+        public IActionResult Recibo()
+        {
+            return View();
+        }
     }
 }

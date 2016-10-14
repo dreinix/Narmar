@@ -4,41 +4,11 @@ using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Collections.Generic;
 using System.Collections;
+using NARMAR;
+using static NARMAR.ValidationAttributes;
 
 namespace NARMAR.Models
 {
-    public class ListMinLength : ValidationAttribute{
-        private int _length;
-        public ListMinLength(int length) {
-            _length = length;
-        }
-        public override bool IsValid(object value)
-        {
-            var list = value as IList;
-            if (list != null)
-            {
-                return list.Count >= _length;
-            }
-            return false;
-        }
-    }
-    public class ListMaxLength : ValidationAttribute
-    {
-        private int _length;
-        public ListMaxLength(int length)
-        {
-            _length = length;
-        }
-        public override bool IsValid(object value)
-        {
-            var list = value as IList;
-            if (list != null)
-            {
-                return list.Count <= _length;
-            }
-            return false;
-        }
-    }
     public class User
     {
         [BsonElement("_id")]
