@@ -43,33 +43,32 @@ namespace NARMAR.Controllers
         }
 
         // POST api/login
+        [HttpGet("{token}")]
+        public dynamic Get(string token)
+        {
+            if (TokenDatabase.ContainsKey(token))
+                return new { status = "success", uid = TokenDatabase[token] };
+            return new { status = "failed" };
+        }
+        // POST api/login
         [HttpPost]
         public dynamic Post([FromBody]dynamic value)
         {
-            var users = _userRepository.AllUsers();
+            var users = _userRepository.AllActive();
             foreach (var user in users)
             {
-                if (user.Active)
+                if (user.username == (string)value.username && user.password == (string)value.password)
                 {
-                    if (user.Username == (string)value.username && user.Password == (string)value.password)
-                    {
-                        string token = CreateAccessToken(user.Id.ToString());
-                        TokenDatabase[token] = user.Id;
-                        Response.Cookies.Append("accessToken", token);
-                        Response.Cookies.Append("currentUserId", user.Id.ToString());
-                        return new { status = "success", token, uid = user.Id };
-                    }
+                    string token = CreateAccessToken(user._id.ToString());
+                    TokenDatabase[token] = user._id;
+                    return new { status = "success", token, uid = user._id };
                 }
             }
             return new { status = "failed" };
         }
-
-        // DELETE api/login/token
         [HttpDelete("{token}")]
         public void Delete(string token)
         {
-            Response.Cookies.Delete("accessToken");
-            Response.Cookies.Delete("currentUserId");
             TokenDatabase.Remove(token);
         }
     }

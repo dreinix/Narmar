@@ -1,12 +1,9 @@
-﻿@{ 
-    NARMAR.Models.IUserRepository _userRepository = new NARMAR.Models.UserRepository();
-}
-<!DOCTYPE html>
-<html>
+﻿<!DOCTYPE html>
+<html ng-app="narmarFlights">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - NARMAR Flights</title>
+    <title>{{ title }}</title>
     <environment names="Development">
         <link rel="stylesheet" href="~/lib/angular-material/angular-material.css" />
         <link rel="stylesheet" href="~/css/site.css" />
@@ -16,68 +13,35 @@
         <link rel="stylesheet" href="~/css/site.min.css" />
     </environment>
 </head>
-<body ng-app="narmarFlights" ng-cloak ng-controller="AppController" ng-init=" init({ token: '@Context.Request.Cookies["accessToken"]' , uid: '@Context.Request.Cookies["currentUserId"]' }) ">
-    <div layout="column" layout-fill>
-        <md-toolbar>
-            <div class="md-toolbar-tools">
-                <img style="height: 80%; margin-right: 10px;" src="~/img/NARMAR-Logo.png"/>
-                <h2>
-                    <span hide-xs>@ViewData["Title"]</span>
-                </h2>
-                <span flex></span>
-                <md-button ng-click="goTo('@Url.Action("Index","Home")')">
-                    Home
-                </md-button>
-                <md-button ng-click="showLogin()" ng-show="currentUser === undefined">
-                    Sign In
-                </md-button>
-                <md-menu>
-                    <md-button ng-click="showMenu($mdOpenMenu, $event)" ng-show="currentUser !== undefined">
-                        <span md-menu-origin>{{ currentUser.FirstName }} {{ currentUser.LastName }}</span>
-                    </md-button>
-                    <md-menu-content width="3">
-                        <md-menu-item>
-                            <md-button ng-click="goTo('@Url.Action("Comprar","Vuelos")')">
-                                <md-icon>airplanemode_active</md-icon> Trips
-                            </md-button>
-                        </md-menu-item>
-                        <md-menu-item>
-                            <md-button ng-click="logout()">
-                                <md-icon>exit_to_app</md-icon> Logout
-                            </md-button>
-                        </md-menu-item>
-                    </md-menu-content>
-                </md-menu>
-            </div>
-        </md-toolbar>
-        <md-content>
-            @RenderBody()
-            @* If no user is logged in *@
-        </md-content>
-        @Html.Partial("_Login");
-    </div>
-    <environment names="Development">
-        <script src="~/lib/jquery/dist/jquery.js"></script>
-        <script src="~/js/jssor.slider-21.1.5.mini.js"></script>
-        <script src="~/lib/angular/angular.js"></script>
-        <script src="~/lib/angular-animate/angular-animate.js"></script>
-        <script src="~/lib/angular-aria/angular-aria.js"></script>
-        <script src="~/lib/angular-messages/angular-messages.js"></script>
-        <script src="~/lib/angular-material/angular-material.js"></script>
-        <script src="~/js/site.js" asp-append-version="true"></script>
-        <script src="~/js/controllers.js" asp-append-version="true"></script>
-        <script src="~/js/factories.js" asp-append-version="true"></script>
-    </environment>
-    <environment names="Staging,Production">
-        <script src="~/lib/jquery/dist/jquery.min.js"></script>
-        <script src="~/lib/angular/angular.min.js"></script>
-        <script src="~/lib/angular-animate/angular-animate.min.js"></script>
-        <script src="~/lib/angular-aria/angular-aria.min.js"></script>
-        <script src="~/lib/angular-messages/angular-messages.min.js"></script>
-        <script src="~/lib/angular-material/angular-material.min.js"></script>
-        <script src="~/js/site.min.js" asp-append-version="true"></script>
-        <script src="~/js/factories.min.js" asp-append-version="true"></script>
-        <script src="~/js/controllers.min.js" asp-append-version="true"></script>
-    </environment>
-</body>
+@*<body ng-app="narmarFlights" ng-cloak ng-controller="AppController" ng-init=" init({ token: '@Context.Request.Cookies["accessToken"]' , uid: '@Context.Request.Cookies["currentUserId"]' }) ">*@
+<body>
+        @RenderBody()
+
+        <environment names="Development">
+            <script src="~/lib/jquery/dist/jquery.js"></script>
+            <script src="~/js/jssor.slider-21.1.5.mini.js"></script>
+            <script src="~/lib/angular/angular.js"></script>
+            <script src="~/lib/angular-animate/angular-animate.js"></script>
+            <script src="~/lib/angular-aria/angular-aria.js"></script>
+            <script src="~/lib/angular-messages/angular-messages.js"></script>
+            <script src="~/lib/angular-material/angular-material.js"></script>
+            <script src="~/js/loader.js"></script>
+            <script src="~/js/factories.js"></script>
+            <script src="~/js/components/app.js"></script>
+            <script src="~/js/components/createuser.js"></script>
+            <script src="~/js/components/login-dialog.js"></script>
+            <script src="~/js/components/slideshow.js"></script>
+            <script src="~/js/components/toolbar.js"></script>
+            <script src="~/js/components/view.js"></script>
+        </environment>
+        <environment names="Staging,Production">
+            <script src="~/lib/jquery/dist/jquery.min.js"></script>
+            <script src="~/lib/angular/angular.min.js"></script>
+            <script src="~/lib/angular-animate/angular-animate.min.js"></script>
+            <script src="~/lib/angular-aria/angular-aria.min.js"></script>
+            <script src="~/lib/angular-messages/angular-messages.min.js"></script>
+            <script src="~/lib/angular-material/angular-material.min.js"></script>
+            <script src="~/js/loader.min.js"></script>
+        </environment>
+    </body>
 </html>

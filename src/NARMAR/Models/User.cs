@@ -12,98 +12,98 @@ namespace NARMAR.Models
     public class User
     {
         [BsonElement("_id")]
-        public ObjectId Id { get; set; }
+        public ObjectId _id { get; set; }
 
         [BsonElement("username")]
-        public string Username { get; set; } = "";
+        public string username { get; set; } = "";
 
         [BsonElement("password")]
-        public string Password { get; set; } = "";
+        public string password { get; set; } = "";
 
         [BsonElement("active")]
-        public bool Active { get; set; } = false;
+        public bool active { get; set; } = false;
 
         [Required]
         [BsonElement("firstName")]
-        public string FirstName { get; set; }
+        public string firstName { get; set; }
 
         [Required]
         [BsonElement("lastName")]
-        public string LastName { get; set; }
+        public string lastName { get; set; }
 
         [Required]
         [BsonElement("passport")]
-        public string Passport { get; set; }
+        public string passport { get; set; }
 
         [MaxLength(25)]
         [BsonElement("identityDocument")]
-        public string IdentityDocument { get; set; }
+        public string identityDocument { get; set; }
 
         [Required]
         [BsonElement("country")]
-        public string Country { get; set; }
+        public string country { get; set; }
 
         [Required]
         [BsonElement("city")]
-        public string City{ get; set; }
+        public string city{ get; set; }
 
         [Required]
         [BsonElement("addressLine1")]
-        public string AddressLine1 { get; set; }
+        public string addressLine1 { get; set; }
 
         [BsonElement("addressLine2")]
-        public string AddressLine2 { get; set; }
+        public string addressLine2 { get; set; }
 
         [Required]
         [BsonElement("postalCode")]
-        public string PostalCode { get; set; }
+        public string postalCode { get; set; }
 
         [Required]
         [BsonElement("birthDate")]
-        public string BirthDate { get; set; }
+        public string birthDate { get; set; }
 
         [Required]
         [BsonElement("gender")]
-        public string Gender { get; set; }
+        public string gender { get; set; }
 
         [Required]
         [BsonElement("civilStatus")]
-        public string CivilStatus { get; set; }
+        public string civilStatus { get; set; }
 
         [Required]
         [BsonElement("contactMethods")]
         [ListMinLength(2)]
         [ListMaxLength(10)]
-        public List<ContactMethod> ContactMethods { get; set; } = new List<ContactMethod>();
+        public List<ContactMethod> contactMethods { get; set; } = new List<ContactMethod>();
 
         [BsonElement("job")]
-        public Job Job { get; set; } = new Job();
+        public Job job { get; set; } = new Job();
 
     }
     public class ContactMethod
     {
         [Required]
         [BsonElement("type")]
-        public string Type { get; set; }
+        public string type { get; set; }
 
         [Required]
         [BsonElement("content")]
-        public string Content { get; set; }
+        public string content { get; set; }
 
         [BsonElement("auxiliar")]
-        public string Auxiliar { get; set; } 
+        public string auxiliar { get; set; } 
     }
     public class Job {
         [BsonElement("company")]
-        public string Company { get; set; }
+        public string company { get; set; }
 
         [BsonElement("department")]
-        public string Department { get; set; }
+        public string department { get; set; }
 
         [BsonElement("position")]
-        public string Position { get; set; }
+        public string position { get; set; }
 
         [BsonElement("salary")]
-        public decimal Salary { get; set; }
+        public decimal salary { get; set; }
     }
 }

@@ -1,8 +1,4 @@
-﻿@{
-    ViewData["Title"] = "Create User";
-}
-@model long
-<section layout="row" layout-align="center center" layout-padding flex ng-controller="UserCreateController" ng-init="init( @Json.Serialize(Model) )">
+﻿<section layout="row" layout-align="center center" layout-padding flex>
     <md-card flex flex-gt-xs="70">
         <md-card-content ng-cloak>
             <form name="userForm">

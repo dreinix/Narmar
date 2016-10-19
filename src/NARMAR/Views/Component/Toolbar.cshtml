@@ -1,0 +1,32 @@
+﻿<md-toolbar>
+    <div class="md-toolbar-tools">
+        <img style="height: 80%; margin-right: 10px;" src="~/img/NARMAR-Logo.png" />
+        <h2>
+            <span hide-xs>{{ $rootScope.title }}</span>
+        </h2>
+        <span flex></span>
+        <md-button ng-click="setView('/')">
+            Home
+        </md-button>
+        <md-button ng-click="$rootScope.toggleLogin(true)" ng-show="$rootScope.currentUser === undefined">
+            Sign In
+        </md-button>
+        <md-menu>
+            <md-button ng-click="showMenu($mdOpenMenu, $event)" ng-show="$rootScope.currentUser !== undefined">
+                <span md-menu-origin>{{ $rootScope.currentUser.firstName | firstWord }} {{ $rootScope.currentUser.lastName | firstWord }}</span>
+            </md-button>
+            <md-menu-content width="3">
+                <md-menu-item>
+                    <md-button ng-click="">
+                        <md-icon>airplanemode_active</md-icon> Trips
+                    </md-button>
+                </md-menu-item>
+                <md-menu-item>
+                    <md-button ng-click="logout()">
+                        <md-icon>exit_to_app</md-icon> Logout
+                    </md-button>
+                </md-menu-item>
+            </md-menu-content>
+        </md-menu>
+    </div>
+</md-toolbar>

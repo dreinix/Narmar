@@ -1,13 +1,17 @@
 ﻿<div style="visibility: hidden">
-    <div class="md-dialog-container" id="loginDialog" ng-controller="LoginController">
+    <div class="md-dialog-container" id="loginDialog">
         <md-dialog layout-padding flex="50" style="padding: 0px">
             <md-button class="md-fab" style="position: absolute; right: 10px; top: 44px;" ng-disabled="!checkLogin()" ng-click="doLogin()">
                 <md-icon>forward</md-icon>
                 <md-tooltip md-direction="top">Sign In</md-tooltip>
             </md-button>
-            <md-button class="md-fab md-mini md-raised md-accent md-hue-1" style="position: absolute; right: 80px; top: 52px;" ng-click="goTo('@Url.Action("Create","User")')">
+            <md-button class="md-fab md-mini md-raised md-accent md-hue-1" style="position: absolute; right: 80px; top: 52px;" ng-click="$rootScope.goTo('/Main/CreateUser')">
                 <md-icon style="color: white;">add</md-icon>
                 <md-tooltip md-direction="top">Sign Up</md-tooltip>
+            </md-button>
+            <md-button class="md-fab md-mini md-raised md-accent md-hue-1" style="position: absolute; right: 135px; top: 52px;" ng-click="$rootScope.toggleLogin(false)">
+                <md-icon style="color: white;">close</md-icon>
+                <md-tooltip md-direction="top">Close</md-tooltip>
             </md-button>
             <md-toolbar>
                 <div class="md-toolbar-tools">

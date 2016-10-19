@@ -39,7 +39,7 @@ namespace NARMAR.Controllers
             Array colors = Enum.GetValues(typeof(KnownColor));
             //g.Clear(Color.FromKnownColor((KnownColor)colors.GetValue(new Random().Next(0,colors.Length-1))));
             g.Clear(Color.DodgerBlue);
-            g.DrawString($"{user.FirstName[0]}{user.LastName[0]}", new Font("Arial", 20),textBrush,left,top);
+            g.DrawString($"{user.firstName[0]}{user.lastName[0]}", new Font("Arial", 20),textBrush,left,top);
             g.Save();
 
             System.IO.MemoryStream stream = new System.IO.MemoryStream();
@@ -52,12 +52,6 @@ namespace NARMAR.Controllers
         public User Get(string id)
         {
             return _userRepository.GetById(new ObjectId(id));
-        }
-        // GET api/user/code/:id
-        [HttpGet("{id:length(24)}")]
-        public string GetCode(string id)
-        {
-            return _userRepository.GetById(new ObjectId(id)).Username;
         }
 
         // POST api/user

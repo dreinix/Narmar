@@ -10,7 +10,9 @@ namespace NARMAR.Models
 {
     public interface IUserRepository
     {
-        IEnumerable<User> AllUsers();
+        List<User> AllUsers();
+        List<User> AllActive();
+        List<User> AllInactive();
         User GetById(ObjectId id);
         bool Exists(ObjectId id);
         void Add(User user);
@@ -30,21 +32,21 @@ namespace NARMAR.Models
         {
             Database = new MongoClient($"mongodb://{ConnectionSettings.Host}:{ConnectionSettings.Port}/").GetDatabase(ConnectionSettings.Database);
         }
-        public IEnumerable<User> AllUsers()
+        public List<User> AllUsers()
         {
-            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Empty).ToEnumerable<User>();
+            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Empty).ToList<User>();
         }
-        public IEnumerable<User> AllActive()
+        public List<User> AllActive()
         {
-            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Eq(x => x.Active,true)).ToEnumerable<User>();
+            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Eq(x => x.active,true)).ToList<User>();
         }
-        public IEnumerable<User> AllInactive()
+        public List<User> AllInactive()
         {
-            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Eq(x => x.Active, false)).ToEnumerable<User>();
+            return Database.GetCollection<User>("Users").FindSync<User>(Builders<User>.Filter.Eq(x => x.active, false)).ToList<User>();
         }
         public User GetById(ObjectId id)
         {
-            var query = Builders<User>.Filter.Eq(x => x.Id, id);
+            var query = Builders<User>.Filter.Eq(x => x._id, id);
             var opts= new FindOptions<User>();
             return Database.GetCollection<User>("Users").FindSync<User>(query, opts).Single<User>();
         }
@@ -58,15 +60,15 @@ namespace NARMAR.Models
         }
         public void Update(ObjectId id, User user)
         {
-            user.Id = id;
+            user._id = id;
             Database.GetCollection<User>("Users").FindOneAndReplace<User>(
-                Builders<User>.Filter.Eq(e => e.Id, id),
+                Builders<User>.Filter.Eq(e => e._id, id),
                 user
             );
         }
         public bool Remove(ObjectId id)
         {
-            Database.GetCollection<User>("Users").DeleteOne(Builders<User>.Filter.Eq(x => x.Id,id));
+            Database.GetCollection<User>("Users").DeleteOne(Builders<User>.Filter.Eq(x => x._id,id));
             return !Exists(id);
         }
     }
